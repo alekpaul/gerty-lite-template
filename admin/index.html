@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GERTY admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@300..700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        container: { center: true, padding: '2rem' },
+        extend: {
+          fontFamily: {
+            sans:  ['Geist', 'ui-sans-serif', 'system-ui'],
+            mono:  ['"Geist Mono"', 'ui-monospace', 'Menlo'],
+          },
+          colors: {
+            border:      'hsl(var(--border))',
+            input:       'hsl(var(--input))',
+            ring:        'hsl(var(--ring))',
+            background:  'hsl(var(--background))',
+            foreground:  'hsl(var(--foreground))',
+            primary:     { DEFAULT: 'hsl(var(--primary))',     foreground: 'hsl(var(--primary-foreground))' },
+            secondary:   { DEFAULT: 'hsl(var(--secondary))',   foreground: 'hsl(var(--secondary-foreground))' },
+            destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
+            muted:       { DEFAULT: 'hsl(var(--muted))',       foreground: 'hsl(var(--muted-foreground))' },
+            accent:      { DEFAULT: 'hsl(var(--accent))',      foreground: 'hsl(var(--accent-foreground))' },
+            popover:     { DEFAULT: 'hsl(var(--popover))',     foreground: 'hsl(var(--popover-foreground))' },
+            card:        { DEFAULT: 'hsl(var(--card))',        foreground: 'hsl(var(--card-foreground))' },
+            success:     'hsl(142 71% 45%)',
+            warning:     'hsl(38 92% 50%)',
+          },
+          borderRadius: {
+            lg: 'var(--radius)',
+            md: 'calc(var(--radius) - 2px)',
+            sm: 'calc(var(--radius) - 4px)',
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="bg-background text-foreground font-sans antialiased">
+
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- ─── Sidebar ──────────────────────────────────────────────── -->
+    <aside class="w-60 shrink-0 border-r border-border bg-card flex flex-col">
+      <div class="px-5 py-5 border-b border-border flex items-center gap-3">
+        <div class="size-8 rounded-md bg-primary text-primary-foreground grid place-items-center text-sm font-bold">G</div>
+        <div>
+          <div class="text-sm font-semibold leading-tight">GERTY admin</div>
+          <div class="text-[11px] text-muted-foreground mt-0.5">localhost · v0.1</div>
+        </div>
+      </div>
+
+      <nav id="tabs" class="flex-1 overflow-y-auto px-3 py-3 space-y-0.5">
+        <button class="tab" data-tab="overview">
+          <span data-icon="overview" class="size-4 shrink-0"></span><span>Overview</span>
+        </button>
+        <button class="tab" data-tab="prompt">
+          <span data-icon="prompt" class="size-4 shrink-0"></span><span>Prompt</span>
+        </button>
+        <button class="tab" data-tab="models">
+          <span data-icon="models" class="size-4 shrink-0"></span><span>Models</span>
+        </button>
+        <button class="tab" data-tab="stats">
+          <span data-icon="stats" class="size-4 shrink-0"></span><span>Stats</span>
+        </button>
+        <button class="tab" data-tab="chats">
+          <span data-icon="chats" class="size-4 shrink-0"></span><span>Chats</span>
+        </button>
+        <button class="tab" data-tab="resources">
+          <span data-icon="resources" class="size-4 shrink-0"></span><span>Resources</span>
+        </button>
+        <button class="tab" data-tab="routines">
+          <span data-icon="routines" class="size-4 shrink-0"></span><span>Routines</span>
+        </button>
+        <button class="tab" data-tab="memory">
+          <span data-icon="memory" class="size-4 shrink-0"></span><span>Memory</span>
+        </button>
+        <button class="tab" data-tab="files">
+          <span data-icon="files" class="size-4 shrink-0"></span><span>Files</span>
+        </button>
+        <button class="tab" data-tab="mcp">
+          <span data-icon="mcp" class="size-4 shrink-0"></span><span>MCP</span>
+        </button>
+        <button class="tab" data-tab="voice">
+          <span data-icon="voice" class="size-4 shrink-0"></span><span>Voice</span>
+        </button>
+      </nav>
+
+      <div class="px-4 py-3 border-t border-border space-y-3">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-muted-foreground">Status</span>
+          <span id="footStatus" class="font-mono text-foreground">—</span>
+        </div>
+        <button id="btnRefresh" class="btn-outline btn-sm w-full">
+          <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+          Refresh
+        </button>
+      </div>
+    </aside>
+
+    <!-- ─── Main content ─────────────────────────────────────────── -->
+    <main class="flex-1 overflow-y-auto">
+
+      <!-- ─── Overview ─────────────────────────────────────── -->
+      <section class="pane active" data-pane="overview">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">Overview</h1>
+            <p class="page-desc">Current state of every subsystem on this host.</p>
+          </div>
+          <div class="flex gap-2">
+            <button id="btnMagicLink" class="btn-primary btn-sm">Resend magic link</button>
+            <a id="lnkTunnel" class="btn-outline btn-sm" href="#" target="_blank" rel="noopener">Open tunnel</a>
+          </div>
+        </div>
+
+        <div id="quickStrip" class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6"></div>
+
+        <div class="card mb-6">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">GPU memory</h2>
+              <p class="card-desc" id="vramSub">—</p>
+            </div>
+            <div class="font-mono text-sm tabular-nums" id="vramNumbers">—</div>
+          </div>
+          <div class="card-body">
+            <div class="progress"><div class="progress-fill" id="vramFill"></div></div>
+          </div>
+        </div>
+
+        <h2 class="section-title">Components</h2>
+        <div id="components" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3"></div>
+      </section>
+
+      <!-- ─── Prompt ───────────────────────────────────────── -->
+      <section class="pane" data-pane="prompt">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">System prompt</h1>
+            <p class="page-desc" id="promptMeta">—</p>
+          </div>
+        </div>
+
+        <div id="promptBanner" class="alert alert-warning mb-4" hidden>
+          <svg class="size-4 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+          <div id="promptNoteText"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2 class="card-title font-mono text-sm">config/.system-prompt</h2>
+          </div>
+          <pre id="promptBody" class="prompt-body">loading…</pre>
+        </div>
+      </section>
+
+      <!-- ─── Models ───────────────────────────────────────── -->
+      <section class="pane" data-pane="models">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">Models & LLM</h1>
+            <p class="page-desc">Configured model, what's loaded, and reasoning settings.</p>
+          </div>
+          <button id="btnLlmRefresh2" class="btn-outline btn-sm">Rescan LM Studio</button>
+        </div>
+
+        <h2 class="section-title">Configuration</h2>
+        <div id="modelConfig" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-8">loading…</div>
+
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="section-title !mb-0">LM Studio</h2>
+          <button id="btnUnloadAll" class="btn-destructive btn-sm">Unload all</button>
+        </div>
+        <div id="llmTable" class="card divide-y divide-border">loading…</div>
+
+        <h2 class="section-title mt-8">Reasoning</h2>
+        <div class="card">
+          <div class="card-body flex items-center justify-between gap-4">
+            <div>
+              <div class="font-medium text-sm">Thinking mode</div>
+              <div id="thinkingLabel" class="text-xs text-muted-foreground mt-0.5">—</div>
+            </div>
+            <label class="switch"><input type="checkbox" id="thinkingToggle" /><span class="slider"></span></label>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Stats ────────────────────────────────────────── -->
+      <section class="pane" data-pane="stats">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">Bot stats</h1>
+            <p class="page-desc">Tokens, calls, and chat history — updated after every reply.</p>
+          </div>
+        </div>
+
+        <h2 class="section-title">Token usage</h2>
+        <div id="usageReadouts" class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">loading…</div>
+
+        <h2 class="section-title">Per-chat history</h2>
+        <div id="histList" class="space-y-2">loading…</div>
+      </section>
+
+      <!-- ─── Chats ────────────────────────────────────────── -->
+      <section class="pane" data-pane="chats">
+        <div class="page-head">
+          <div class="page-head-main">
+            <span class="page-icon" data-icon="chats"></span>
+            <div>
+              <h1 class="page-title">Chats</h1>
+              <p class="page-desc" id="chatsMeta">—</p>
+            </div>
+          </div>
+          <button id="chatsRefresh" class="btn-outline btn-sm">↻ Reload</button>
+        </div>
+
+        <h2 class="section-title">Conversations</h2>
+        <div id="chatsList" class="space-y-2 mb-4">loading…</div>
+
+        <div id="chatViewer" hidden>
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="section-title !mb-0">
+              chat · <span id="chatChatId" class="font-mono text-muted-foreground"></span>
+            </h2>
+            <div class="flex gap-2">
+              <button id="chatClose" class="btn-ghost btn-sm">Close</button>
+              <button id="chatClear" class="btn-destructive btn-sm">Clear all turns</button>
+            </div>
+          </div>
+          <div id="chatTurns" class="space-y-2"></div>
+        </div>
+      </section>
+
+      <!-- ─── Resources ────────────────────────────────────── -->
+      <section class="pane" data-pane="resources">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">System resources</h1>
+            <p class="page-desc">VRAM via nvidia-smi · RAM/CPU/disk via psutil · live, polled every 5s.</p>
+          </div>
+        </div>
+        <div id="resBars" class="space-y-3"></div>
+      </section>
+
+      <!-- ─── Routines ─────────────────────────────────────── -->
+      <section class="pane" data-pane="routines">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">Routines & reminders</h1>
+            <p class="page-desc" id="routinesMeta">—</p>
+          </div>
+        </div>
+        <div id="routinesList" class="space-y-3">loading…</div>
+      </section>
+
+      <!-- ─── Memory ───────────────────────────────────────── -->
+      <section class="pane" data-pane="memory">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">Long-term memory</h1>
+            <p class="page-desc" id="memoryMeta">—</p>
+          </div>
+        </div>
+
+        <div class="filter-bar mb-4">
+          <input type="search" id="memSearch" placeholder="Search by name or description…" class="filter-input flex-1" />
+          <select id="memSubject" class="filter-input">
+            <option value="">All subjects</option>
+          </select>
+          <select id="memSort" class="filter-input">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="name">By name</option>
+          </select>
+          <select id="memWhen" class="filter-input">
+            <option value="">Any time</option>
+            <option value="24h">Last 24h</option>
+            <option value="7d">Last 7 days</option>
+            <option value="30d">Last 30 days</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-[minmax(280px,360px)_1fr] gap-4">
+          <div id="memoryList" class="space-y-2">loading…</div>
+          <div class="card">
+            <div class="card-head">
+              <h2 class="card-title font-mono text-xs" id="memorySelLabel">no entry selected</h2>
+            </div>
+            <pre id="memoryView" class="prompt-body">Select an entry on the left to preview it.</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Files ────────────────────────────────────────── -->
+      <section class="pane" data-pane="files">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">User files sandbox</h1>
+            <p class="page-desc" id="filesMeta">—</p>
+          </div>
+        </div>
+        <div id="filesList" class="space-y-2">loading…</div>
+      </section>
+
+      <!-- ─── MCP ──────────────────────────────────────────── -->
+      <section class="pane" data-pane="mcp">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">MCP servers</h1>
+            <p class="page-desc">Toggle and refresh cached schemas, then restart the listener to apply.</p>
+          </div>
+        </div>
+        <div id="mcpList" class="space-y-3">loading…</div>
+      </section>
+
+      <!-- ─── Voice ────────────────────────────────────────── -->
+      <section class="pane" data-pane="voice">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">Voice</h1>
+            <p class="page-desc" id="voiceMeta">—</p>
+          </div>
+        </div>
+        <div id="voiceList" class="space-y-2">loading…</div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ─── Log overlay ─────────────────────────────────────────── -->
+  <div id="logPanel" class="fixed inset-x-0 bottom-0 left-60 h-[55vh] bg-card border-t border-border shadow-2xl z-50 flex flex-col" hidden>
+    <header class="px-5 py-3 border-b border-border flex items-center justify-between">
+      <div class="text-sm font-medium">Log · <span id="logTitle" class="font-mono text-muted-foreground"></span></div>
+      <button id="logClose" class="btn-ghost btn-sm">Close</button>
+    </header>
+    <pre id="logBody" class="flex-1 m-0 p-5 bg-background text-xs font-mono leading-relaxed overflow-auto whitespace-pre-wrap break-all"></pre>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

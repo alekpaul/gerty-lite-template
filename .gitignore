@@ -1,0 +1,98 @@
+# ── Secrets — never commit ───────────────────────────────────────────────────
+config/.telegram-config
+config/.allowed-chats
+config/.system-prompt
+config/.paths
+# Local routines live alongside .example template — never commit personal schedules.
+config/routines.json
+# Live model config + voice-clone gender map — both per-install; ship the .example
+# templates instead. setup.py writes the live versions during onboarding.
+config/.model
+config/stickers.json
+.voice-genders.json
+# Stray editor / refactor backups (.bak, .bak-*).
+*.bak
+*.bak-*
+.voice-config.json
+.tts-refs/
+
+# ── User data — local to each install ────────────────────────────────────────
+# Repo ships an empty data/ skeleton (.gitkeep + initial _index.md). Everything
+# the user accumulates inside (notes, memory entries, drafts) stays local.
+data/vault/inbox/*
+!data/vault/inbox/.gitkeep
+data/vault/drafts/*
+!data/vault/drafts/.gitkeep
+data/vault/published/*
+!data/vault/published/.gitkeep
+data/vault/resources/*
+!data/vault/resources/.gitkeep
+data/vault/templates/*
+!data/vault/templates/.gitkeep
+data/notes/Progress/*
+!data/notes/Progress/.gitkeep
+data/memory/entries/*
+!data/memory/entries/.gitkeep
+data/files/**
+!data/files/.gitkeep
+
+# ── Runtime state ────────────────────────────────────────────────────────────
+.gemma-offset
+.processed-ids
+.thinking-mode
+.restart-flag
+.routines-last-fire.json
+.watchdog-offset
+.bar-msg-id
+.detail-msg-id
+.magic-msg-id
+.usage-stats.json
+.ctrl-pipe
+.ctrl-pipe.lnk
+.history/
+.goals/
+.mcp-cache/
+.listener.lock/
+.watchdog.lock
+.admin.pid
+.mtp-drafters/
+.tmp/
+
+# ── Single-instance PID files ───────────────────────────────────────────────
+*.pid
+.gerty-lite.pid
+.context-bar.pid
+.routines.pid
+
+# ── Local Python environments ───────────────────────────────────────────────
+.venv/
+.venvs/
+vendor/
+__pycache__/
+*.pyc
+
+# ── Logs ────────────────────────────────────────────────────────────────────
+*.log
+autostart.log
+gerty-lite.log
+health.log
+kokoro.log
+routines.log
+context-bar.log
+watchdog.log
+
+# ── Bundled third-party (vendored elsewhere) ────────────────────────────────
+camofox-browser/
+.bin/
+
+# ── Editor / OS noise ───────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+.claude/
+
+# ── Hello-world artifacts ───────────────────────────────────────────────────
+hello.bat
+hello.py

@@ -1,0 +1,26 @@
+{
+  "_comment": "MCP server registry. Each enabled server is spawned on demand and its tools become available to gerty as mcp__<name>__<tool>. After enabling or editing a server, run: python scripts/mcp_client.py refresh — this caches the tool schemas so message-handling stays fast. The filesystem server's last arg is the directory it's allowed to read/write — set it to your own vault before enabling.",
+  "servers": [
+    {
+      "name": "filesystem",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "."
+      ],
+      "env": {},
+      "enabled": false
+    },
+    {
+      "name": "memory",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "env": {},
+      "enabled": false
+    }
+  ]
+}

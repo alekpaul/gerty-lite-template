@@ -1,0 +1,22 @@
+{
+  "_comment": "Example routines file. The setup wizard copies this to config/routines.json on first run. Edit the live copy (it's gitignored) — never edit this template. Replace `chat_id: null` with your Telegram chat_id when not using the wizard.",
+
+  "chat_id": null,
+
+  "routines": [
+    {
+      "id": "dream",
+      "schedule": "30 3 * * *",
+      "enabled": true,
+      "one_shot": false,
+      "prompt": "DREAM PASS — consolidate memory from recent conversation. Run silently; do NOT call send_message. Steps:\n\n1. Call recent_chat(limit=80) to read the last 80 user/assistant turns.\n2. Call list_memory() to see what's already saved (avoid duplicates).\n3. Identify durable facts worth remembering long-term: preferences, recurring topics, people mentioned, ongoing projects, decisions, plans, health/diet/schedule patterns. SKIP ephemeral chat (greetings, jokes, one-off questions).\n4. For each new fact, call save_memory(name, content, subject, related=[...]) with:\n   - kebab-case name\n   - the concise fact as content\n   - subject from: health, preferences, people, projects, work, general\n   - related=[existing-memory-names] when there's a clear connection (cross-link!)\n5. If an existing memory should link to the new one, pass related=[old-name] — back-link is added automatically.\n6. Be conservative — 0-5 new memories per night is normal. Don't invent.\n\nDo not reply to the user. Output channel is save_memory calls only."
+    },
+    {
+      "id": "morning-brief-example",
+      "schedule": "0 8 * * *",
+      "enabled": false,
+      "one_shot": false,
+      "prompt": "Example daily routine — fires at 08:00 each day. Disabled by default; flip `enabled: true` to use, then customize the prompt. The placeholder `{today}` is replaced with the ISO date when the routine fires.\n\nExample: 'Call list_routines() to remind me what's scheduled, then call send_message() with a brief good-morning + the day's list.'"
+    }
+  ]
+}

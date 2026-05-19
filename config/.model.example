@@ -1,0 +1,22 @@
+# GERTY — model selection (single source of truth).
+# Copy to config/.model and edit, OR let `python setup.py` write it for you.
+#
+# Sourced by autostart.sh, gemma-listener.sh, health-check.sh, and exported
+# to routines.py + context_bar.py via the listener's environment.
+
+# Main chat model — paste the id from `lms ls` (the bot will load this on
+# startup if it isn't already loaded in LM Studio).
+export GERTY_MODEL="gemma-4-26b-a4b-it-uncensored"
+
+# Context window in tokens. 32768 is a safe default; raise if your VRAM
+# allows it. Hard upper limit is the model's `max_context_length`.
+export GERTY_CONTEXT=32768
+
+# Sibling gerty-live (realtime voice WS) uses this. Keep in sync with
+# GERTY_MODEL or LM Studio tries to load a second copy and runs out of VRAM.
+export GERTY_LIVE_MODEL="$GERTY_MODEL"
+
+# Vision model — JIT-loaded only when the user sends a photo. The main model
+# stays loaded; this one auto-unloads after GERTY_VISION_TTL seconds of idle.
+export GERTY_VISION_MODEL="gemma-3-4b-it"
+export GERTY_VISION_TTL=300

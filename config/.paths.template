@@ -1,0 +1,19 @@
+# Paths config — copy this to config/.paths and edit if you want to point the
+# bot at directories outside the repo (e.g. an existing notes vault on iCloud).
+# All paths can be absolute or relative to the repo root (the parent of config/).
+# Lines starting with # are comments. Empty lines are ignored.
+#
+# VAULT_ROOT  — where the bot reads/writes free-form vault files (drafts,
+#               inbox, published, etc.). Default: ./data/vault
+# NOTES_ROOT  — your daily/structured notes. Default: ./data/notes
+#               If you have an existing Obsidian vault, point this there.
+# MEMORY_ROOT — the bot's own memory entries + index. Default: ./data/memory
+#               Keep this inside the repo so each install has its own memory.
+# FILES_ROOT  — guardrailed sandbox for user files (PDFs, docs, attachments)
+#               received from Telegram or stored on request. Default: ./data/files
+#               All file tools refuse to read/write/move outside this root.
+
+VAULT_ROOT=./data/vault
+NOTES_ROOT=./data/notes
+MEMORY_ROOT=./data/memory
+FILES_ROOT=./data/files

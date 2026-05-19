@@ -1,0 +1,23 @@
+{
+  "_comment": "Sticker library. The bot picks randomly within a mood key. Add Telegram sticker file_ids to the empty arrays below. To capture file_ids: send a sticker to your bot — it auto-saves them under `_user`. setup.py copies this to stickers.json on first run.",
+  "_packs": [],
+  "laugh": [],
+  "love": [],
+  "agree": [],
+  "hello": [],
+  "happy": [],
+  "thinking": [],
+  "sad": [],
+  "surprised": [],
+  "cool": [],
+  "celebrate": [],
+  "clap": [],
+  "bored": [],
+  "wink": [],
+  "strong": [],
+  "angry": [],
+  "question": [],
+  "smug": [],
+  "dance": [],
+  "_user": []
+}

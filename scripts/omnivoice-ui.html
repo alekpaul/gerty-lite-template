@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OmniVoice — clones</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #181b22;
+    --panel-2: #1f232c;
+    --fg: #e6e8ee;
+    --fg-dim: #9aa3b2;
+    --accent: #7cc4ff;
+    --accent-2: #ffb86b;
+    --danger: #ff7a7a;
+    --ok: #7cf2a0;
+    --border: #2a2f3a;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg); color: var(--fg);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, sans-serif;
+    font-size: 15px; line-height: 1.45;
+  }
+  .wrap { max-width: 820px; margin: 0 auto; padding: 24px 18px 64px; }
+  h1 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+  .sub { color: var(--fg-dim); margin-bottom: 28px; font-size: 13px; }
+  h2 { font-size: 16px; font-weight: 600; margin: 24px 0 12px; color: var(--fg); }
+  .panel {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px 18px; margin-bottom: 18px;
+  }
+  label { display: block; font-size: 13px; color: var(--fg-dim); margin-bottom: 6px; }
+  input[type=text], input[type=file] {
+    width: 100%; background: var(--panel-2); color: var(--fg);
+    border: 1px solid var(--border); border-radius: 8px; padding: 9px 10px;
+    font: inherit; outline: none;
+  }
+  input[type=text]:focus { border-color: var(--accent); }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .row > * { flex: 1; min-width: 140px; }
+  .row.tight > * { flex: 0 0 auto; }
+  button {
+    background: var(--panel-2); color: var(--fg);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 9px 14px; font: inherit; cursor: pointer;
+    transition: background .15s, border-color .15s;
+  }
+  button:hover:not(:disabled) { background: #262b36; border-color: #3a4150; }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  button.primary { background: var(--accent); color: #0a1220; border-color: var(--accent); font-weight: 600; }
+  button.primary:hover:not(:disabled) { background: #98d2ff; }
+  button.warn { color: var(--danger); border-color: #3a2a2e; }
+  button.warn:hover:not(:disabled) { background: #2a1c20; }
+  .lang-pick { display: inline-flex; gap: 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .lang-pick button {
+    border: none; border-radius: 0; padding: 8px 12px; background: var(--panel-2);
+  }
+  .lang-pick button.active { background: var(--accent); color: #0a1220; }
+  .stat { color: var(--fg-dim); font-size: 12px; margin-top: 8px; min-height: 16px; }
+  .stat.ok { color: var(--ok); }
+  .stat.err { color: var(--danger); }
+  .voice {
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 14px; margin-bottom: 10px;
+    display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap;
+  }
+  .voice .meta { flex: 1; min-width: 200px; }
+  .voice .name { font-weight: 600; }
+  .voice .langs { display: inline-flex; gap: 6px; margin-left: 8px; }
+  .badge {
+    font-size: 11px; padding: 2px 7px; border-radius: 999px;
+    background: #243244; color: #aacaff; border: 1px solid #2c4060;
+  }
+  .badge.uk { background: #2e2a18; color: #ffd58a; border-color: #4a3f1c; }
+  .transcript { color: var(--fg-dim); font-size: 13px; margin-top: 4px; white-space: pre-wrap; }
+  .voice .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+  .src-toggle { display: inline-flex; gap: 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+  .src-toggle button { border: none; border-radius: 0; padding: 8px 14px; background: var(--panel-2); }
+  .src-toggle button.active { background: var(--accent); color: #0a1220; font-weight: 600; }
+  .rec-controls { display: flex; gap: 8px; align-items: center; }
+  .rec-time { font-variant-numeric: tabular-nums; color: var(--fg-dim); min-width: 50px; }
+  audio { width: 100%; margin-top: 6px; }
+  .footer { color: var(--fg-dim); font-size: 12px; margin-top: 28px; }
+  .footer code { background: var(--panel-2); padding: 1px 6px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>OmniVoice clones</h1>
+  <div class="sub">References live in <code style="background:var(--panel-2);padding:1px 5px;border-radius:4px;">D:/gerty-lite/.tts-refs/</code>. Activate in Telegram with <code style="background:var(--panel-2);padding:1px 5px;border-radius:4px;">/voice omni_&lt;name&gt;</code>.</div>
+
+  <div class="panel">
+    <h2 style="margin-top:0">New clone</h2>
+    <div style="margin-bottom: 12px;">
+      <label for="vname">Voice name</label>
+      <input id="vname" type="text" placeholder="my-voice" maxlength="30" autocomplete="off">
+    </div>
+
+    <div style="margin-bottom: 12px;">
+      <label>Language</label>
+      <div class="lang-pick" id="langpick">
+        <button type="button" data-lang="en" class="active">🇬🇧 English</button>
+        <button type="button" data-lang="uk">🇺🇦 Ukrainian</button>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 8px;">
+      <label>Source</label>
+      <div class="src-toggle" id="srctoggle">
+        <button type="button" data-src="upload" class="active">📁 Upload file</button>
+        <button type="button" data-src="record">🎙 Record</button>
+      </div>
+    </div>
+
+    <div id="srcUpload">
+      <input id="fileinput" type="file" accept="audio/*,.mp3,.m4a,.wav,.ogg,.opus,.webm,.flac">
+    </div>
+
+    <div id="srcRecord" style="display:none">
+      <div class="rec-controls">
+        <button id="recBtn" type="button">● Start recording</button>
+        <span class="rec-time" id="recTime">0:00</span>
+        <button id="recDiscard" type="button" disabled>Discard</button>
+      </div>
+      <audio id="recPreview" controls style="display:none"></audio>
+      <div class="stat" id="recHint">Speak a clear 5–15 second sample. Headphones-free is fine.</div>
+    </div>
+
+    <div style="margin-top: 14px;" class="row tight">
+      <button id="submitBtn" class="primary" type="button" disabled>Save clone</button>
+      <span class="stat" id="status"></span>
+    </div>
+  </div>
+
+  <h2>Existing clones</h2>
+  <div id="voices">Loading…</div>
+
+  <div class="footer">
+    server: <code id="srv">http://127.0.0.1:8883</code> &nbsp;·&nbsp;
+    <a href="/health" style="color:var(--accent)">/health</a>
+  </div>
+</div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const status = (msg, cls = "") => {
+    const el = $("status");
+    el.textContent = msg || "";
+    el.className = "stat" + (cls ? " " + cls : "");
+  };
+
+  let selectedLang = "en";
+  let selectedSrc = "upload";
+  let recordedBlob = null;
+  let mediaRecorder = null;
+  let recChunks = [];
+  let recStart = 0;
+  let recTimer = null;
+
+  // ─── Language picker ────────────────────────────────────────────────────────
+  document.querySelectorAll("#langpick button").forEach(b => {
+    b.onclick = () => {
+      document.querySelectorAll("#langpick button").forEach(x => x.classList.remove("active"));
+      b.classList.add("active");
+      selectedLang = b.dataset.lang;
+    };
+  });
+
+  // ─── Source toggle ──────────────────────────────────────────────────────────
+  document.querySelectorAll("#srctoggle button").forEach(b => {
+    b.onclick = () => {
+      document.querySelectorAll("#srctoggle button").forEach(x => x.classList.remove("active"));
+      b.classList.add("active");
+      selectedSrc = b.dataset.src;
+      $("srcUpload").style.display = selectedSrc === "upload" ? "" : "none";
+      $("srcRecord").style.display = selectedSrc === "record" ? "" : "none";
+      updateSubmitState();
+    };
+  });
+
+  // ─── Sanitize name client-side (mirrors clone-voice.py) ─────────────────────
+  function sanitize(name) {
+    return (name || "").toLowerCase().replace(/[^a-z0-9-]+/g, "-")
+      .replace(/^-+|-+$/g, "").slice(0, 30);
+  }
+  $("vname").addEventListener("input", updateSubmitState);
+  $("fileinput").addEventListener("change", updateSubmitState);
+
+  function updateSubmitState() {
+    const nameOk = sanitize($("vname").value).length > 0;
+    const srcOk = selectedSrc === "upload"
+      ? ($("fileinput").files && $("fileinput").files.length > 0)
+      : !!recordedBlob;
+    $("submitBtn").disabled = !(nameOk && srcOk);
+  }
+
+  // ─── Recording ──────────────────────────────────────────────────────────────
+  async function startRecording() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      recChunks = [];
+      mediaRecorder = new MediaRecorder(stream);
+      mediaRecorder.ondataavailable = e => { if (e.data.size) recChunks.push(e.data); };
+      mediaRecorder.onstop = () => {
+        recordedBlob = new Blob(recChunks, { type: mediaRecorder.mimeType || "audio/webm" });
+        const url = URL.createObjectURL(recordedBlob);
+        $("recPreview").src = url;
+        $("recPreview").style.display = "";
+        $("recBtn").textContent = "● Re-record";
+        $("recDiscard").disabled = false;
+        stream.getTracks().forEach(t => t.stop());
+        updateSubmitState();
+      };
+      mediaRecorder.start();
+      recStart = Date.now();
+      $("recBtn").textContent = "■ Stop";
+      $("recBtn").dataset.mode = "stop";
+      $("recHint").textContent = "Recording…";
+      recTimer = setInterval(() => {
+        const s = Math.floor((Date.now() - recStart) / 1000);
+        $("recTime").textContent = `${Math.floor(s/60)}:${(s%60).toString().padStart(2,'0')}`;
+      }, 250);
+    } catch (e) {
+      $("recHint").textContent = "Mic denied or unavailable: " + e.message;
+      $("recHint").className = "stat err";
+    }
+  }
+  function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
+    clearInterval(recTimer);
+    $("recBtn").textContent = "● Re-record";
+    $("recBtn").dataset.mode = "start";
+    $("recHint").textContent = "Recorded. Preview above, or re-record.";
+    $("recHint").className = "stat";
+  }
+  $("recBtn").onclick = () => {
+    if ($("recBtn").dataset.mode === "stop") stopRecording();
+    else startRecording();
+  };
+  $("recDiscard").onclick = () => {
+    recordedBlob = null;
+    $("recPreview").src = "";
+    $("recPreview").style.display = "none";
+    $("recTime").textContent = "0:00";
+    $("recBtn").textContent = "● Start recording";
+    $("recDiscard").disabled = true;
+    $("recHint").textContent = "Speak a clear 5–15 second sample. Headphones-free is fine.";
+    updateSubmitState();
+  };
+
+  // ─── Voice list ─────────────────────────────────────────────────────────────
+  async function loadVoices() {
+    const r = await fetch("/v1/voices");
+    const j = await r.json();
+    const root = $("voices");
+    if (!j.voices.length) { root.innerHTML = '<div class="stat">No clones yet — create your first above.</div>'; return; }
+    root.innerHTML = "";
+    for (const v of j.voices) {
+      const div = document.createElement("div");
+      div.className = "voice";
+      const langs = v.langs.map(l => `<span class="badge ${l==='uk'?'uk':''}">${l.toUpperCase()}</span>`).join("");
+      const tEn = v.transcripts.en || "";
+      const tUk = v.transcripts.uk || "";
+      div.innerHTML = `
+        <div class="meta">
+          <span class="name">${v.id}</span>
+          <span class="langs">${langs}</span>
+          ${tEn ? `<div class="transcript"><b>EN:</b> ${tEn.slice(0,160)}${tEn.length>160?'…':''}</div>` : ''}
+          ${tUk ? `<div class="transcript"><b>UK:</b> ${tUk.slice(0,160)}${tUk.length>160?'…':''}</div>` : ''}
+          <audio data-voice="${v.id}" preload="none" controls style="margin-top:8px;display:none"></audio>
+        </div>
+        <div class="actions">
+          <button class="play" data-voice="${v.id}">▶ Play sample</button>
+          <button class="warn delete" data-voice="${v.id}">Delete</button>
+        </div>`;
+      root.appendChild(div);
+    }
+    root.querySelectorAll("button.play").forEach(b => {
+      b.onclick = async () => {
+        const name = b.dataset.voice;
+        b.disabled = true; b.textContent = "synth…";
+        try {
+          const sample = "Hello, this is " + name.replace(/-/g, " ") + ". This is a quick voice preview.";
+          const r = await fetch("/v1/speak", {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: sample, voice_id: name, format: "ogg" })
+          });
+          if (!r.ok) throw new Error("speak failed: " + r.status);
+          const blob = await r.blob();
+          const audio = b.closest(".voice").querySelector("audio");
+          audio.src = URL.createObjectURL(blob);
+          audio.style.display = "";
+          audio.play();
+        } catch (e) {
+          alert("Sample error: " + e.message);
+        } finally {
+          b.disabled = false; b.textContent = "▶ Play sample";
+        }
+      };
+    });
+    root.querySelectorAll("button.delete").forEach(b => {
+      b.onclick = async () => {
+        const name = b.dataset.voice;
+        if (!confirm(`Delete clone '${name}' (all language variants)?`)) return;
+        b.disabled = true;
+        const r = await fetch("/v1/delete", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, lang: "all" })
+        });
+        const j = await r.json();
+        if (j.ok) loadVoices();
+        else alert("Delete failed");
+      };
+    });
+  }
+  loadVoices();
+
+  // ─── Submit ─────────────────────────────────────────────────────────────────
+  $("submitBtn").onclick = async () => {
+    const name = sanitize($("vname").value);
+    if (!name) { status("name required", "err"); return; }
+
+    let blob, filename;
+    if (selectedSrc === "upload") {
+      const f = $("fileinput").files[0];
+      if (!f) { status("pick a file", "err"); return; }
+      blob = f; filename = f.name;
+    } else {
+      if (!recordedBlob) { status("record something first", "err"); return; }
+      blob = recordedBlob; filename = "recording.webm";
+    }
+
+    const fd = new FormData();
+    fd.append("file", blob, filename);
+    fd.append("name", name);
+    fd.append("lang", selectedLang);
+
+    $("submitBtn").disabled = true;
+    status("uploading + transcribing… (~10–30s)");
+    try {
+      const r = await fetch("/v1/clone", { method: "POST", body: fd });
+      const j = await r.json();
+      if (j.ok) {
+        status(`✓ saved as omni_${j.voice} (${j.lang}). use /voice omni_${j.voice} in Telegram to activate.`, "ok");
+        $("vname").value = "";
+        $("fileinput").value = "";
+        recordedBlob = null;
+        $("recPreview").src = ""; $("recPreview").style.display = "none";
+        $("recDiscard").disabled = true; $("recBtn").textContent = "● Start recording";
+        $("recTime").textContent = "0:00";
+        loadVoices();
+      } else {
+        status("✗ " + (j.error || "unknown") + " — " + (j.stderr || "").slice(-200), "err");
+      }
+    } catch (e) {
+      status("✗ " + e.message, "err");
+    } finally {
+      $("submitBtn").disabled = false;
+      updateSubmitState();
+    }
+  };
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+[
+  {"command": "new",      "description": "Reset conversation context"},
+  {"command": "status",   "description": "Show model + thinking mode"},
+  {"command": "thinking", "description": "Toggle thinking mode on/off"},
+  {"command": "goal",     "description": "Show/set/clear a sustained objective"},
+  {"command": "restart",  "description": "Restart the bot listener"},
+  {"command": "help",     "description": "List available commands"}
+]

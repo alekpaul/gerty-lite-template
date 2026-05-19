@@ -1,0 +1,3 @@
+{
+  "_comment": "Per-voice gender map used by Ukrainian grammar (past-tense agreement, predicate adjectives). Populated automatically when you /clone a voice — masculine / feminine. Empty by default."
+}

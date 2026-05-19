@@ -1,0 +1,11 @@
+# Vendored Python deps for optional features (MCP). Install with:
+#   <runtime-python> -m pip install --target vendor -r vendor.requirements.txt
+#
+# Where <runtime-python> is the same python the listener uses to run
+# scripts/gemma_chat.py. On the current setup that's:
+#   C:/Users/alekp/AppData/Roaming/uv/python/cpython-3.12.11-windows-x86_64-none/python.exe
+#
+# scripts/vendor_setup.py wires sys.path + Windows DLL paths to make these
+# packages importable without modifying the system Python.
+
+mcp
