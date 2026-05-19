@@ -113,4 +113,5 @@ After setup the bot can:
 
 ## License
 
-[Add your license here.]
+MIT — see [LICENSE](LICENSE). Fork it, ship it, sell it, just keep the
+copyright notice.
